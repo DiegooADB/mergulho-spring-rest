@@ -1,4 +1,4 @@
-package me.diego.algalog.exceptionHandler;
+package me.diego.algalog.api.exceptionHandler;
 
 import me.diego.algalog.domain.exception.NegocioException;
 import org.springframework.context.MessageSource;
@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,7 +41,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
         Problema problema = new Problema(
                 status.value(),
-                LocalDateTime.now(),
+                OffsetDateTime.now(),
                 "Um ou mais campos estão inválidos. Faça o preenchimento correto e tente novamente",
                 campos
         );
@@ -56,7 +56,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
         Problema problema = new Problema(
                 status.value(),
-                LocalDateTime.now(),
+                OffsetDateTime.now(),
                 ex.getMessage(),
                 null
         );

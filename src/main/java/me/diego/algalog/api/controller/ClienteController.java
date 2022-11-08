@@ -1,4 +1,4 @@
-package me.diego.algalog.controller;
+package me.diego.algalog.api.controller;
 
 import lombok.RequiredArgsConstructor;
 import me.diego.algalog.domain.model.Cliente;
