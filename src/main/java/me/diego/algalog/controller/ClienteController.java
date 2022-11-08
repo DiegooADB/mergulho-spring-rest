@@ -1,26 +1,22 @@
 package me.diego.algalog.controller;
 
+import lombok.RequiredArgsConstructor;
 import me.diego.algalog.domain.model.Cliente;
-import me.diego.algalog.domain.model.repository.ClienteRepository;
-import org.apache.coyote.Response;
+import me.diego.algalog.domain.repository.ClienteRepository;
+import me.diego.algalog.domain.service.CatalogoClienteService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping(path = "/clientes")
+@RequiredArgsConstructor
 public class ClienteController {
     private final ClienteRepository clienteRepository;
-
-    public ClienteController(ClienteRepository clienteRepository) {
-        this.clienteRepository = clienteRepository;
-    }
+    private final CatalogoClienteService clienteService;
 
     @GetMapping
     public List<Cliente> listar() {
@@ -36,7 +32,7 @@ public class ClienteController {
 
     @PostMapping
     public ResponseEntity<Cliente> adicionar(@Valid @RequestBody Cliente cliente) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(clienteRepository.save(cliente));
+        return ResponseEntity.status(HttpStatus.CREATED).body(clienteService.salvar(cliente));
     }
 
     @PutMapping(path = "/{clienteId}")
@@ -45,7 +41,9 @@ public class ClienteController {
         if (!clienteRepository.existsById(clienteId)) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
-        cliente = clienteRepository.save(cliente);
+
+        cliente.setId(clienteId);
+        cliente = clienteService.salvar(cliente);
 
         return ResponseEntity.status(HttpStatus.OK).body(cliente);
     }
